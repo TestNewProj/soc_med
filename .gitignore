@@ -1,0 +1,27 @@
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+tests/
+tests.py
+
+# Database
+*.sqlite3
+*.db
+
+# IDE
+.idea/
+.vscode/
+
+# Static and media
+# /staticfiles/
+# /media/
+
+# System
+.DS_Store
+*.log

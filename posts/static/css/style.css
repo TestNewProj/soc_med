@@ -1,0 +1,18 @@
+/* Базовые стили */
+body {
+    font-family: 'Segoe UI', sans-serif;  /* Современный шрифт */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;  /* Светлый фон */
+}
+
+/* Стили для навигации */
+.navbar {
+    background: #343a40;  /* Тёмный фон */
+    padding: 1rem;
+}
+.navbar a {
+    color: white !important;  /* !important перебивает стили Bootstrap */
+    margin-right: 15px;
+}

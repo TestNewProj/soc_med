@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
+from .models import Post, Comment, Profile
+from .forms import PostForm, CommentForm, UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 
 # Create your views here.
 class PostCreateView(LoginRequiredMixin, CreateView):
@@ -63,3 +64,31 @@ def like_post(request, pk):
         post.likes.add(request.user)
         liked = True
     return JsonResponse({'liked': liked, 'count': post.likes.count()})
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Сохраняем пользователя
+            Profile.objects.create(user=user)  # Вручную создаём профиль
+            login(request, user)  # Автоматический вход после регистрации
+            return redirect('profile')  # Перенаправляем в профиль
+        
+    else:
+        form = UserRegisterForm()
+    return render(request, 'user/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    # Получаем или создаём профиль, если его нет
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileUpdateForm(instance=profile)
+    
+    return render(request, 'user/profile.html', {'form': form})

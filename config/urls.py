@@ -16,11 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from posts.views import home, post_detail, like_post
+from posts.views import home, post_detail, like_post, register, profile
+from django.contrib.auth import views as auth_views
 
+
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
     path('posts/<int:pk>/', post_detail, name='post_detail'),
-    path('posts/<int:pk>/like/', like_post, name='like_post')
+    path('posts/<int:pk>/like/', like_post, name='like_post'),
+    path('register/', register, name='register'),
+    path('login/', auth_views.LoginView.as_view(template_name='user/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
+    path('profile/', profile, name='profile'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

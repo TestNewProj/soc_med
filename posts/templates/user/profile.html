@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <!-- Карточка профиля -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h4 class="mb-0 text-center">Мой профиль</h4>
+                </div>
+                
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start">
+                        <!-- Аватар -->
+                        <div class="me-4">
+                            <img src="{{ user.profile.image.url }}" 
+                                 class="rounded-circle border" 
+                                 width="120" 
+                                 height="120"
+                                 alt="Аватар"
+                                 onerror="this.src='{% static 'default.png' %}'">
+                        </div>
+                        
+                        <!-- Информация -->
+                        <div class="flex-grow-1">
+                            <h5 class="mb-2">{{ user.username }}</h5>
+                            <p class="small text-muted">
+                                Зарегистрирован: {{ user.date_joined|date:"d.m.Y" }}
+                            </p>
+                            
+                            <!-- Кнопки действий -->
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="{% url 'home' %}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-pencil"></i> На главную
+                                </a>
+                                
+                                <form action="{% url 'logout' %}" method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-box-arrow-right"></i> Выйти
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .rounded-circle {
+        object-fit: cover;
+    }
+</style>
+{% endblock %}

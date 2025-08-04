@@ -36,7 +36,7 @@ def post_detail(request, pk):
 
     return render(request, 'posts/detail.html', {
         'post': post,
-        'comment': comments,
+        'comments': comments,
         'form': form
     })
 
